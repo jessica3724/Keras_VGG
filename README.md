@@ -19,8 +19,8 @@ filename = save the testing data path in test.txt.
 proportion = the proportion with testing data.  
 
 ### 2. execution prepare_data.py
-
-
+  
+  
 ## Second. train model:
 ### 1. revise config/model.ini
 [data]  
