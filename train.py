@@ -33,8 +33,8 @@ def main(model_config_path):
     pretrained_path = model_config.get('train', 'pretrained_path')
 
     # ** GPU configuration
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-
+    os.environ['CUDA_VISIBLE_DEVICES'] = model_config.get('gpu', 'gpu')
+    
     # ** set now_time folder in weight folder to model weight save path
     filename = 'ep{epoch:03d}-loss{val_loss:.3f}.h5'
     weights_directory = os.path.join(ROOT_DIR, 'weights')
