@@ -2,9 +2,9 @@
 paper from https://arxiv.org/abs/1409.1556  
 (only VGG16)
 ## Getting start
-Keras==2.2.4  
-tensorflow-gpu==1.9.0   
-numpy==1.16.3 
+ - Keras 2.2.4  
+ - tensorflow-gpu 1.9.0   
+ - numpy 1.16.3 
 ## First. prepare data: 
 ### 1. revise config/data.ini 
 [data]  
