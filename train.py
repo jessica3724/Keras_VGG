@@ -45,19 +45,6 @@ def main(model_config_path):
     save_path = os.path.join(weights_directory, now_time, filename)
 
     # ** setup keras callback
-    '''
-    1.ReduceLROnPlateau:
-    monitor: 監控的數值
-    factor: learning rate降低的因數。new learning rate = learning rate * factor
-    patience: 如果監控的數值在執行了patience設定的次數都沒有下降，lr就下降一次
-    verbose: 0:關閉訊息, 1:顯示訊息
-
-    2. EarlyStopping:
-    monitor: 監控的數值
-    min_delta: 如果監控的數值小於min_delta的數值時，就停止訓練。
-    patience: 如果監控的數值在執行了patience設定的次數都沒有下降，就停止訓練。
-    verbose: 0:關閉訊息, 1:顯示訊息
-    '''
     checkpoint = ModelCheckpoint(save_path, monitor='val_loss', save_best_only=True)
     # scheduler = LearningRateScheduler(learning_rate_scheduler)
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.01, patience=5, verbose=1)
@@ -91,9 +78,6 @@ def main(model_config_path):
 
 def __create_training_model(input_size, num_classes, learning_rate, pretrained_path=None):
     model = vgg16_keras(input_size, num_classes, pretrained_path=pretrained_path)
-    '''
-    compile: 確立目標及求解方法，以compile函數定義損失函數(loss)、優化函數(optimizer)及成效衡量指標(mertrics)。
-    '''
     model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=learning_rate), metrics=['accuracy'])
     print('model is ready~')
     return model
