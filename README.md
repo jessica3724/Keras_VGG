@@ -1,7 +1,7 @@
-# Keras_VGG
+## Keras_VGG
 
-## First. prepare data: 
-### 1. revise config/data.ini
+### First. prepare data: 
+- revise config/data.ini
 [data]  
 path = the folder absolute path where the data is.  
 classes_path = the classes names of all data.  
@@ -18,11 +18,13 @@ proportion = the proportion with validation data.
 filename = save the testing data path in test.txt.  
 proportion = the proportion with testing data.  
 
-### 2. execution prepare_data.py
+- execution prepare_data.py
+```python
+python prepare_data.py
+```
   
-  
-## Second. train model:
-### 1. revise config/model.ini
+### Second. train model:
+- revise config/model.ini
 [data]  
 train_set = train.txt path(same as config/data.ini training/filename).  
 val_set = val.txt path(same as config/data.ini validation/filename).  
@@ -41,4 +43,7 @@ pretrained_path = if pre-trained model path, or do not fill in.
 [gpu]  
 gpu = specified GPU to train model.  
 
-### 2. execution train.py
+- execution train.py
+```python
+python train.py
+```
