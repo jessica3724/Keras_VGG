@@ -15,7 +15,7 @@ classes_path = the classes names of all data.
 filename = save the training data path in train.txt.  
 proportion = the proportion with training data.  
 
-[validation] 
+[validation]  
 filename = save the validation data path in val.txt.  
 proportion = the proportion with validation data.  
 
