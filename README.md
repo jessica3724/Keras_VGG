@@ -52,3 +52,30 @@ gpu = specified GPU to train model.
 ```
 python train.py
 ```
+---
+## Third. test model: execution train.py
+```
+python test.py
+```
+### 1. import vgg.py
+```
+from vgg import VGG16
+```
+### 2. call class VGG16
+```
+VGG16_model = VGG16(model_path = MODEL_PATH, classes_names_path = CLASSES_NAMES_PATH)
+```
+#### 3. predict(image) and batch predict(image_list)
+```
+# ** predict
+image = cv2.imread(IMAGE_PATH)
+print(VGG16_model.infer(image))
+
+# ** batch predict
+image_list = []
+input_path = FOLDER_PATH
+for image_name in os.listdir(input_path):
+    image = cv2.imread(os.path.join(input_path, image_name))
+    image_list.append(image)
+print(VGG16_model.batch_infer(image_list))
+```

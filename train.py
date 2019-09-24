@@ -1,5 +1,6 @@
 import os
 import cv2
+import shutil
 import datetime
 import configparser
 
@@ -19,6 +20,7 @@ def main(model_config_path):
     # ** data configuration
     train_set = model_config.get('data', 'train_set')
     val_set = model_config.get('data', 'val_set')
+    classes_names = model_config.get('data', 'classes_names')
 
     # ** vgg16 configuration
     input_size = model_config.getint('model', 'input_size')
@@ -27,14 +29,13 @@ def main(model_config_path):
     # ** training configuration
     epochs = model_config.getint('train', 'epochs')
     batch_size = model_config.getint('train', 'batch_size')
-    # save_freq = model_config.getint('train', 'save_freq')
     learning_rate = model_config.getfloat('train', 'learning_rate')
     save_path = model_config.get('train', 'save_path')
     pretrained_path = model_config.get('train', 'pretrained_path')
 
     # ** GPU configuration
     os.environ['CUDA_VISIBLE_DEVICES'] = model_config.get('gpu', 'gpu')
-    
+
     # ** set now_time folder in weight folder to model weight save path
     filename = 'ep{epoch:03d}-loss{val_loss:.3f}.h5'
     weights_directory = os.path.join(ROOT_DIR, 'weights')
@@ -46,20 +47,22 @@ def main(model_config_path):
 
     # ** setup keras callback
     checkpoint = ModelCheckpoint(save_path, monitor='val_loss', save_best_only=True)
-    # scheduler = LearningRateScheduler(learning_rate_scheduler)
-    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.01, patience=5, verbose=1)
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1)
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=12, verbose=1)
 
     # NOTE get data information
     with open(train_set, 'r') as f:
-        train_lines = f.readlines()
+        train_lines = f.read().splitlines()
 
     with open(val_set, 'r') as f:
-        val_lines = f.readlines()
+        val_lines = f.read().splitlines()
+
+    # NOTE save training info
+    shutil.copy2(classes_names, os.path.join(weights_directory, now_time))
 
     # NOTE data preprocess
-    train_generator = data_generator(lines=train_lines, num_classes=num_classes, batch_size=batch_size, input_size=input_size)
-    val_generator = data_generator(lines=val_lines, num_classes=num_classes, batch_size=batch_size, input_size=input_size)
+    train_generator = data_generator(lines=train_lines, num_classes=num_classes, batch_size=batch_size, input_size=input_size, trainable_btn=False)
+    val_generator = data_generator(lines=val_lines, num_classes=num_classes, batch_size=batch_size, input_size=input_size, trainable_btn=False)
 
     # ** train
     if pretrained_path:
@@ -77,7 +80,7 @@ def main(model_config_path):
                               verbose=1)
 
 def __create_training_model(input_size, num_classes, learning_rate, pretrained_path=None):
-    model = vgg16_keras(input_size, num_classes, pretrained_path=pretrained_path)
+    model = vgg16(input_size, num_classes, pretrained_path=pretrained_path)
     model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=learning_rate), metrics=['accuracy'])
     print('model is ready~')
     return model
