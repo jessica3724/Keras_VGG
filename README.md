@@ -73,9 +73,8 @@ print(VGG16_model.infer(image))
 
 # ** batch predict
 image_list = []
-input_path = FOLDER_PATH
-for image_name in os.listdir(input_path):
-    image = cv2.imread(os.path.join(input_path, image_name))
+for image_name in os.listdir(FOLDER_PATH):
+    image = cv2.imread(os.path.join(FOLDER_PATH, image_name))
     image_list.append(image)
 print(VGG16_model.batch_infer(image_list))
 ```
