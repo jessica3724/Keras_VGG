@@ -53,7 +53,7 @@ gpu = specified GPU to train model.
 python train.py
 ```
 ---
-## Third. test model: execution t.py
+## Third. test model: execution test.py
 ```
 python test.py
 ```
